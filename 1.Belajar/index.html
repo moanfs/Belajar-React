@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Belajar React</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+    
+      function MyApp({author}) {
+        return <h1>Hello, world! {author ? author : 'WPU'} 🚀</h1>;
+      }
+
+      function MyButton({text, onClick, counts}){
+        const myStyle = (text !== 'Reset!') ? {}: {margin:20, display:'block'}
+        const disable = {cursor: 'not-allowed', opacity: 0.6}
+        return (
+          <button onClick={onClick} style={(counts>10 || counts<0) ?disable : myStyle} >
+            {text}
+          </button>
+        )
+      }
+
+      function MyCounts({counts}){
+        return (
+            <span> {(counts > 10 || counts < 0 ) ? 'Done!!' : counts}</span>
+        )
+      }
+      
+      function HomePage(){
+        const students = ['Sandika', 'Moan', 'Budi'];
+        const [likes, setLikes] = React.useState(0);
+        const [counts, setCounter] = React.useState(0);
+       
+
+        function handleClick(){
+            setLikes(likes + 1);
+        }
+
+        function increment(){
+            setCounter( counts + 1);
+        }
+        function decrement(){
+            setCounter(counts - 1);
+        }
+
+        function reset(){
+            setCounter(0);
+        }
+        return(
+            <div>
+                <MyApp author="Moan"/>
+                <ul>
+                {
+                    students.map((student)=> (
+                        <li key={student}>{student}</li>
+                    ))
+                }    
+                </ul>
+                <button onClick={handleClick}>Like ({likes})</button>
+
+                <div>
+                    <MyButton text={'-'} onClick={decrement} counts={counts} />
+                    <MyCounts counts={counts}/>
+                    <MyButton text={'+'} onClick={increment} counts={counts} />
+                    <MyButton text={'Reset!'} onClick={reset} counter={counts} />
+                </div>
+            </div>
+        )
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<HomePage />);
+
+    </script>
+  </body>
+</html>
